@@ -1,0 +1,291 @@
+/* General Body and Container Styling */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column; /* Stack vertically on small screens */
+  width: 100%;
+  max-width: 1200px; /* Max width for the entire app */
+  gap: 20px;
+}
+
+@media (min-width: 1024px) { /* For large screens (lg breakpoint) */
+  .app-container {
+    flex-direction: row; /* Side-by-side on large screens */
+  }
+}
+
+/* History Component Styling */
+.history-container {
+  flex: 0 0 250px; /* Fixed width for history on large screens */
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+  max-height: calc(100vh - 40px); /* Adjust based on body padding */
+}
+
+@media (max-width: 1023px) { /* For small and medium screens */
+  .history-container {
+    width: 100%;
+    max-height: 300px; /* Limit height on smaller screens */
+  }
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.history-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin: 0; /* Reset margin from history-title */
+}
+
+.new-chart-button {
+  padding: 8px 15px;
+  background-color: #28a745; /* Green color for add button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.new-chart-button:hover {
+  background-color: #218838;
+}
+
+.history-message {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.history-error {
+  color: #d9534f;
+  font-size: 0.9em;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  padding: 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-item:hover {
+  background-color: #e6f7ff;
+  border-color: #91d5ff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.history-item-question {
+  font-size: 0.95rem;
+  color: #0056b3;
+  margin-bottom: 5px;
+  line-height: 1.3;
+}
+
+.history-item-details {
+  font-size: 0.8em;
+  color: #777;
+}
+
+/* Main Content Area Styling */
+.main-content-area {
+  flex: 1; /* Takes remaining space */
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+@media (min-width: 640px) { /* For small screens (sm breakpoint) */
+  .input-form {
+    flex-direction: row;
+  }
+}
+
+.input-field {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #333;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.submit-button {
+  padding: 12px 25px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.submit-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Status Messages (Typewriter) */
+.status-message {
+  color: #555;
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.typewriter-message {
+  display: inline-block;
+}
+
+.typewriter-content {
+  display: inline;
+}
+
+/* SQL Display Section */
+.sql-display-section {
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 30px;
+}
+
+.sql-label {
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Removed .sql-label-typewriter as label is now static */
+
+.sql-box {
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 6px;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  color: #333;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: auto; /* Ensure scroll if content is too long */
+  min-height: 5em; /* Added min-height to prevent layout shift during typing */
+}
+
+/* Chart Display Section */
+.chart-display-section {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+.chart-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* New class for chart title when typewriter is active */
+.chart-title-typewriter {
+  font-size: 1.75rem; /* Match static size */
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  min-height: 1.75rem; /* Prevent layout shift as text types */
+}
+
+
+.chart-iframe {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 400px; /* Fixed height for the iframe */
+}
+
+/* Error Message */
+.error-message {
+  color: #d9534f;
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+  padding: 12px;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  margin-top: 20px;
+}
