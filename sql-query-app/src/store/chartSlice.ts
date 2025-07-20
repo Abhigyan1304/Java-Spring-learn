@@ -19,7 +19,8 @@ interface ChartState {
   loadingSql: boolean;
   loadingChart: boolean;
   error: string | null;
-  sqlContentWriterDone: boolean; // Renamed back: Indicates SQL content typewriter completion
+  sqlLabelTyped: boolean; // New: Indicates when "The generated SQL query is:" label is typed
+  sqlContentTyped: boolean; // Renamed: Indicates when SQL query content is typed
   chartLabelWriterDone: boolean; // To track typewriter completion for chart label
   history: ChartApiResponse[]; // Array to store past charts
   loadingHistory: boolean; // Loading state for history
@@ -34,7 +35,8 @@ const initialState: ChartState = {
   loadingSql: false,
   loadingChart: false,
   error: null,
-  sqlContentWriterDone: false, // Initial state for new name
+  sqlLabelTyped: false, // Initialize new state
+  sqlContentTyped: false, // Initialize renamed state
   chartLabelWriterDone: false,
   history: [],
   loadingHistory: false,
@@ -59,32 +61,41 @@ export const generateSqlQuery = createAsyncThunk(
 // Async Thunk for Chart generation (simulated API call)
 export const generateChart = createAsyncThunk(
   'chart/generateChart',
-    async ({ sqlQuery, question }: { sqlQuery: string; question: string }, { rejectWithValue }) => {
-    try {
-        // const chartRes = await fetch("/api/ve");
+  async ({ sqlQuery, question }: { sqlQuery: string; question: string }, { rejectWithValue }) => {
+      try {
+          const chartAns: ChartApiResponse = {
+              sql_query_gen_by_model: 'qdewdweew',
+              chart_id: '',
+              chart_url: '',
+              user_id: '',
+              chart_type: 'Abhigyan',
+              timestamp: 123,
+              question: 'ulala'
+          }
+          return chartAns
+      // Simulate an error 30% of the time for testing purposes
+      if (Math.random() < 0.3) {
+        throw new Error("Simulated chart generation failure!");
+      }
+
+      // Perform the actual API call
+      const chartRes = await fetch("/api/ve");
 
       // Check if the response was successful (status code 200-299)
-    //   if (!chartRes.ok) {
-    //     If not OK, try to read the error message from the response body
-    //     or default to status text if body is empty/unreadable
-    //     const errorText = await chartRes.text();
-    //     throw new Error(`HTTP error! Status: ${chartRes.status}, Message: ${errorText || chartRes.statusText}`);
-    //   }
-
-        const chartInfo : ChartApiResponse= {
-            sql_query_gen_by_model: 'select * from table',
-            chart_id: '1',
-            chart_url: 'http://youtube.com',
-            user_id: '1',
-            chart_type: 'youtube chart',
-            timestamp: 1,
-            question: 'question by me'
-        }
+      if (!chartRes.ok) {
+        // If not OK, try to read the error message from the response body
+        // or default to status text if body is empty/unreadable
+        const errorText = await chartRes.text();
+        throw new Error(`HTTP error! Status: ${chartRes.status}, Message: ${errorText || chartRes.statusText}`);
+      }
+      
+      const chartInfo = await chartRes.json();
       return chartInfo;
-    } catch (error: any) {
-        return rejectWithValue(error.message || 'Error creating chart.');
+    } catch (err: any) {
+      // Return the exact error message from the caught error
+      return rejectWithValue(err.message || 'Error creating chart.');
     }
-    }
+  }
 );
 
 // New Async Thunk for fetching chart history (simulated API call)
@@ -211,13 +222,18 @@ const chartSlice = createSlice({
       state.loadingSql = false;
       state.loadingChart = false;
       state.error = null;
-      state.sqlContentWriterDone = false; // Reset for new process
+      state.sqlLabelTyped = false; // Reset new state
+      state.sqlContentTyped = false; // Reset renamed state
       state.chartLabelWriterDone = false; // Reset chart label typewriter
       // Do NOT reset history here, as it's persistent
     },
+    // Action to mark SQL label typewriter as done
+    setSqlLabelTyped: (state, action: PayloadAction<boolean>) => {
+      state.sqlLabelTyped = action.payload;
+    },
     // Action to mark SQL content typewriter as done
-    setSqlContentWriterDone: (state, action: PayloadAction<boolean>) => {
-      state.sqlContentWriterDone = action.payload;
+    setSqlContentTyped: (state, action: PayloadAction<boolean>) => {
+      state.sqlContentTyped = action.payload;
     },
     // Action to mark chart label typewriter as done
     setChartLabelWriterDone: (state, action: PayloadAction<boolean>) => {
@@ -236,7 +252,8 @@ const chartSlice = createSlice({
       state.loadingSql = false;
       state.loadingChart = false;
       state.error = null;
-      state.sqlContentWriterDone = true; // Assume SQL is "done" if loaded from history
+      state.sqlLabelTyped = true; // Assume typed if loaded from history
+      state.sqlContentTyped = true; // Assume typed if loaded from history
       state.chartLabelWriterDone = true; // Assume chart label is "done" if loaded from history
     },
     // New action to load application state from a parsed ChartApiResponse (e.g., from URL)
@@ -247,7 +264,8 @@ const chartSlice = createSlice({
       state.loadingSql = false;
       state.loadingChart = false;
       state.error = null;
-      state.sqlContentWriterDone = true; // Content is already available
+      state.sqlLabelTyped = true; // Content is already available
+      state.sqlContentTyped = true; // Content is already available
       state.chartLabelWriterDone = true; // Label is already available
     },
   },
@@ -261,7 +279,8 @@ const chartSlice = createSlice({
       .addCase(generateSqlQuery.fulfilled, (state, action: PayloadAction<string>) => {
         state.loadingSql = false;
         state.sqlQuery = action.payload;
-        state.sqlContentWriterDone = false; // Reset for typewriter effect on SQL content
+        state.sqlLabelTyped = false; // Reset for typewriter effect on SQL label
+        state.sqlContentTyped = false; // Reset for typewriter effect on SQL content
       })
       .addCase(generateSqlQuery.rejected, (state, action: PayloadAction<any>) => {
         state.loadingSql = false;
@@ -303,7 +322,8 @@ const chartSlice = createSlice({
 export const {
   setInputQuestion,
   resetChartState,
-  setSqlContentWriterDone,
+  setSqlLabelTyped, // Export new action
+  setSqlContentTyped, // Export renamed action
   setChartLabelWriterDone,
   addChartToHistory,
   setSelectedChartFromHistory,

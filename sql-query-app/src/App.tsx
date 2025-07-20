@@ -11,7 +11,8 @@ import {
   resetChartState,
   generateSqlQuery,
   generateChart,
-  setSqlContentWriterDone,
+  setSqlLabelTyped, // New action
+  setSqlContentTyped, // Renamed action
   setChartLabelWriterDone,
   loadAppStateFromEncodedUrl,
 } from './store/chartSlice';
@@ -36,8 +37,9 @@ const App: React.FC = () => {
     chartData,
     loadingSql,
     loadingChart,
-    error, // This is the state that holds the error message
-    sqlContentWriterDone,
+    error,
+    sqlLabelTyped, // New state
+    sqlContentTyped, // Renamed state
     chartLabelWriterDone,
   } = useSelector((state: RootState) => state.chart); // Access the 'chart' slice
 
@@ -97,12 +99,12 @@ const App: React.FC = () => {
   useEffect(() => {
     // Only proceed if SQL query is available, its content has finished typing,
     // chart is not loading, chartData is null, AND there is no active error.
-    if (sqlQuery && sqlContentWriterDone && !loadingChart && !chartData && !error) {
+    if (sqlQuery && sqlContentTyped && !loadingChart && !chartData && !error) {
       // Dispatch the async thunk to generate the chart, passing the original question
       dispatch(generateChart({ sqlQuery, question: inputQuestion }));
     }
-    // Dependency array: re-run this effect when sqlQuery, sqlContentWriterDone, loadingChart, chartData, or error changes
-  }, [sqlQuery, sqlContentWriterDone, dispatch, loadingChart, chartData, inputQuestion, error]);
+    // Dependency array: re-run this effect when sqlQuery, sqlContentTyped, loadingChart, chartData, or error changes
+  }, [sqlQuery, sqlContentTyped, dispatch, loadingChart, chartData, inputQuestion, error]);
 
   return (
     <div className="app-container">
@@ -138,33 +140,45 @@ const App: React.FC = () => {
           </p>
         )}
 
-        {/* Display SQL Query Label (Static) and Content (Typewriter) */}
+        {/* Display SQL Query Label (Typewriter) and Content (Typewriter) */}
         {sqlQuery && !loadingSql && (
           <div className="sql-display-section">
-            {/* Static label */}
-            <p className="sql-label">The generated SQL query is:</p>
+            {/* Typewriter for the SQL label */}
+            {!sqlLabelTyped ? (
+              <p className="sql-label-typewriter">
+                <Typewriter
+                  text="The generated SQL query is:"
+                  className="typewriter-content"
+                  onDone={() => dispatch(setSqlLabelTyped(true))}
+                  speed={70} // Slower speed for the label
+                />
+              </p>
+            ) : (
+              // Static label once typewriter is done
+              <p className="sql-label">The generated SQL query is:</p>
+            )}
 
-            {/* SQL content with typewriter effect */}
-            {!sqlContentWriterDone ? (
+            {/* SQL content with typewriter effect, only visible after label is typed */}
+            {sqlLabelTyped && !sqlContentTyped ? (
               <pre className="sql-box">
                 <Typewriter
                   text={sqlQuery}
                   className="typewriter-content"
-                  onDone={() => dispatch(setSqlContentWriterDone(true))}
+                  onDone={() => dispatch(setSqlContentTyped(true))}
                   speed={30} // Slower speed for SQL query content
                 />
               </pre>
-            ) : (
+            ) : sqlLabelTyped && sqlContentTyped ? (
               // Static SQL content once typewriter is done
               <pre className="sql-box">
                 {sqlQuery}
               </pre>
-            )}
+            ) : null} {/* Render nothing until sqlLabelTyped */}
           </div>
         )}
 
         {/* Chart Generation Status (Typewriter) */}
-        {loadingChart && sqlQuery && sqlContentWriterDone && !chartData && ( // Depend on sqlContentWriterDone
+        {loadingChart && sqlQuery && sqlContentTyped && !chartData && ( // Depend on sqlContentTyped
           <p className="status-message">
             <Typewriter text="Generating Chart..." className="typewriter-message" />
           </p>
