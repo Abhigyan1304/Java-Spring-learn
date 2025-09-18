@@ -1,0 +1,19 @@
+[
+  { "id": "package_name", "label": "Package Name", "type": "text" },
+  { "id": "brand", "label": "Brand", "type": "text" },
+  { "id": "processor", "label": "Processor", "type": "dropdown", "options": ["Snapdragon", "Mediatek", "Exynos"] },
+  { "id": "screen_size", "label": "Screen Size", "type": "dropdown", "options": ["6.1\"", "6.7\""] },
+  { "id": "screen_type", "label": "Screen Type", "type": "dropdown", "options": ["AMOLED", "LCD"] },
+  { "id": "resolution", "label": "Resolution", "type": "dropdown", "options": ["FHD+", "QHD+"] },
+  { "id": "ram", "label": "RAM", "type": "dropdown", "options": ["8GB", "12GB"] },
+  { "id": "rear_camera", "label": "Rear Camera", "type": "dropdown", "options": ["50MP", "64MP", "108MP"] },
+  { "id": "front_camera", "label": "Front Camera", "type": "dropdown", "options": ["16MP", "32MP", "48MP"] },
+  { "id": "side_frame", "label": "Side Frame", "type": "dropdown", "options": ["Aluminum", "Plastic"] },
+  { "id": "back_material", "label": "Back Material", "type": "text" },
+  { "id": "battery_capacity", "label": "Battery Capacity", "type": "text" },
+  { "id": "charging_speed", "label": "Charging Speed", "type": "text" },
+  { "id": "inbox_charger", "label": "Inbox Charger", "type": "dropdown", "options": ["Available", "Not Available"] },
+  { "id": "os_update_policy", "label": "OS Update Policy", "type": "dropdown", "options": ["2 Years", "3 Years", "4 Years"] },
+  { "id": "ip_protection", "label": "IP Protection", "type": "dropdown", "options": ["IP52", "IP67", "IP68"] },
+  { "id": "price", "label": "Price", "type": "number" }
+]

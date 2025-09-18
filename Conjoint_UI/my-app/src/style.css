@@ -1,0 +1,51 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 1rem;
+}
+
+h1, h2 {
+  margin-bottom: 0.5rem;
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.styled-table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+}
+
+.styled-table th,
+.styled-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+
+.styled-table th {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #f1f3f5;
+}
+
+input[type="text"] {
+  width: 90%;
+  padding: 2px;
+}
+
+select {
+  width: 95%;
+  padding: 2px;
+}
+
+.market-container {
+  margin-top: 2rem;
+}
