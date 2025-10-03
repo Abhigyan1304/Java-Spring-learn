@@ -1,0 +1,49 @@
+[
+  {
+    "question": "List the names of all employees who work in the Sales department.",
+    "answer": "<think>The query needs to filter employees based on the Sales department and then return their names.</think>\n<sql>SELECT name FROM employees WHERE department = 'Sales';</sql>\n<explanation>This query selects only the employee names from the employees table where the department is 'Sales'.</explanation>",
+    "expected_results": [
+      {"name": "John Smith"},
+      {"name": "Sarah Johnson"},
+      {"name": "Michael Brown"},
+      {"name": "Emily Davis"}
+    ]
+  },
+  {
+    "question": "Find the average salary of employees in each department.",
+    "answer": "<think>We need to group employees by department and calculate the average salary.</think>\n<sql>SELECT department, AVG(salary) AS avg_salary FROM employees GROUP BY department;</sql>\n<explanation>The query groups employees by department and uses the AVG aggregate function to compute average salary for each group.</explanation>",
+    "expected_results": [
+      {"department": "Sales", "avg_salary": 75000.00},
+      {"department": "IT", "avg_salary": 85000.00},
+      {"department": "HR", "avg_salary": 65000.00},
+      {"department": "Marketing", "avg_salary": 70000.00}
+    ]
+  },
+  {
+    "question": "Get the top 5 customers who spent the most money.",
+    "answer": "<think>We need to order customers by their total spending and return the top 5.</think>\n<sql>SELECT customer_id, SUM(amount) AS total_spent FROM orders GROUP BY customer_id ORDER BY total_spent DESC LIMIT 5;</sql>\n<explanation>The query sums order amounts per customer, sorts them in descending order, and limits the results to the top 5 spenders.</explanation>",
+    "expected_results": [
+      {"customer_id": "C001", "total_spent": 15000.00},
+      {"customer_id": "C002", "total_spent": 12500.00},
+      {"customer_id": "C003", "total_spent": 11000.00},
+      {"customer_id": "C004", "total_spent": 9500.00},
+      {"customer_id": "C005", "total_spent": 8000.00}
+    ]
+  },
+  {
+    "question": "Show all products that have never been ordered.",
+    "answer": "<think>We need products that do not appear in the orders table.</think>\n<sql>SELECT p.product_id, p.product_name FROM products p LEFT JOIN order_items oi ON p.product_id = oi.product_id WHERE oi.product_id IS NULL;</sql>\n<explanation>The LEFT JOIN ensures all products are included, and filtering NULL order references returns products with no orders.</explanation>",
+    "expected_results": [
+      {"product_id": "P101", "product_name": "Wireless Headphones"},
+      {"product_id": "P102", "product_name": "Smart Watch Pro"},
+      {"product_id": "P103", "product_name": "Bluetooth Speaker"}
+    ]
+  },
+  {
+    "question": "Retrieve the total number of orders placed in 2023.",
+    "answer": "<think>We need to filter orders by the year 2023 and count them.</think>\n<sql>SELECT COUNT(*) as order_count FROM orders WHERE YEAR(order_date) = 2023;</sql>\n<explanation>This query counts how many rows exist in the orders table where the order_date is from 2023.</explanation>",
+    "expected_results": [
+      {"order_count": 1250}
+    ]
+  }
+]
